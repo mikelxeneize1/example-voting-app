@@ -1,7 +1,6 @@
 # Usar una imagen base ligera de Node.js versión 18
 FROM node:18-slim
 
-# Añadir curl para realizar verificaciones de salud
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl tini && \
     rm -rf /var/lib/apt/lists/*
@@ -29,4 +28,3 @@ ENTRYPOINT ["/usr/bin/tini", "--"]
 
 # Configurar el comando por defecto (opcional)
 CMD ["node","server.js"]
-
