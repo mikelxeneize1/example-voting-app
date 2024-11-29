@@ -1,4 +1,4 @@
-# Define a base stage that uses the official python runtime base image
+# Define a base stage that uses the official Python runtime base image
 FROM python:3.11-slim AS base
 
 # Add curl for healthcheck
@@ -9,12 +9,11 @@ RUN apt-get update && \
 # Set the application directory
 WORKDIR /usr/local/app
 
-# Install our requirements.txt
+# Install the dependencies from requirements.txt
 COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Define a stage specifically for development, where it'll watch for
-# filesystem changes
+# Define a stage specifically for development, where it'll watch for filesystem changes
 FROM base AS dev
 RUN pip install watchdog
 ENV FLASK_ENV=development

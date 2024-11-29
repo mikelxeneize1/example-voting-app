@@ -1,25 +1,30 @@
+# Usar una imagen base ligera de Node.js versión 18
 FROM node:18-slim
 
-# add curl for healthcheck
 RUN apt-get update && \
     apt-get install -y --no-install-recommends curl tini && \
     rm -rf /var/lib/apt/lists/*
 
+# Configurar el directorio de trabajo
 WORKDIR /usr/local/app
 
-# have nodemon available for local dev use (file watching)
+# Instalar nodemon globalmente para desarrollo local
 RUN npm install -g nodemon
 
+# Copiar los archivos de package.json y package-lock.json
 COPY package*.json ./
 
-RUN npm ci && \
- npm cache clean --force && \
- mv /usr/local/app/node_modules /node_modules
+# Instalar dependencias usando npm ci y limpiar caché
+RUN npm install && \
+    npm cache clean --force
 
+# Copiar el resto del código fuente al contenedor
 COPY . .
 
 ENV PORT 80
 EXPOSE 80
 
 ENTRYPOINT ["/usr/bin/tini", "--"]
-CMD ["node", "server.js"]
+
+# Configurar el comando por defecto (opcional)
+CMD ["node","server.js"]
