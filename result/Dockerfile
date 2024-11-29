@@ -16,7 +16,7 @@ RUN npm install -g nodemon
 COPY package*.json ./
 
 # Instalar dependencias usando npm ci y limpiar caché
-RUN npm ci && \
+RUN npm install && \
     npm cache clean --force
 
 # Copiar el resto del código fuente al contenedor
